@@ -1,24 +1,24 @@
-import { differenceInDays } from 'date-fns';
-import ProgressBar from '@ramonak/react-progress-bar'
-import React, {useState, useEffect} from 'react';
+import { differenceInDays } from "date-fns";
+import ProgressBar from "@ramonak/react-progress-bar";
+import React, { useState, useEffect } from "react";
 
-function App(){
+function App() {
   const [goals, setGoals] = useState([]);
-  const[name, setName] = useState("");
-  const[targetAmount, setTargetAmount] = useState("");
-  const[savedAmount, setSavedAmount] = useState("");
-  const[category, setCategory] = useState("");
-  const[deadline, setDeadline] = useState("");
-  const[createdAt, setCreatedAt] = useState("");
-  const[editingGoal, setEditingGoal]= useState("")
+  const [name, setName] = useState("");
+  const [targetAmount, setTargetAmount] = useState("");
+  const [savedAmount, setSavedAmount] = useState("");
+  const [category, setCategory] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  const [editingGoal, setEditingGoal] = useState("");
 
-  useEffect(() =>{
+  useEffect(() => {
     fetch("https://smart-goal-planner-json-server-z3qo.onrender.com/goals")
-    .then((res) => res.json())
-    .then((data) =>setGoals(data))
-  },[]);
+      .then((res) => res.json())
+      .then((data) => setGoals(data));
+  }, []);
 
-  function resetForm(){
+  function resetForm() {
     setName("");
     setTargetAmount("");
     setSavedAmount("");
@@ -28,57 +28,82 @@ function App(){
     setEditingGoal("");
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
-    if(editingGoal){
-     const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt};
+    if (editingGoal) {
+      const newGoal = {
+        name,
+        targetAmount,
+        savedAmount,
+        category,
+        deadline,
+        createdAt,
+      };
 
-    fetch(`https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${editingGoal.id}`,{
-      method: "PATCH",
-      headers: {"Content-Type": "application/json",
+      fetch(
+        `https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${editingGoal.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            targetAmount,
+            savedAmount,
+            category,
+            deadline,
+          }),
+        }
+      )
+        .then((res) => res.json())
+        .then((updatedGoal) => {
+          setGoals(
+            goals.map((goal) =>
+              goal.id === updatedGoal.id ? updatedGoal : goal
+            )
+          );
+          resetForm();
+        });
+    } else {
+      const newGoal = {
+        id,
+        name,
+        targetAmount,
+        savedAmount,
+        category,
+        deadline,
+        createdAt,
+      };
 
-      },
-      body: JSON.stringify({
-        name,targetAmount,savedAmount,category, deadline,
+      fetch("https://smart-goal-planner-json-server-z3qo.onrender.com/goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newGoal),
       })
-    })
-    .then((res) => res.json())
-    .then(updatedGoal => {
-      setGoals(goals.map(goal => (goal.id === updatedGoal.id ?updatedGoal: goal)));
-      resetForm();
-    });
-  }else {;
-     const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt};
+        .then((res) => res.json())
+        .then((data) => {
+          setGoals([...goals, data]);
+          setName("");
+          setTargetAmount("");
+          setSavedAmount("");
+          setCategory("");
+          setDeadline("");
+          setCreatedAt("");
+        });
+    }
+  }
 
-    fetch("https://smart-goal-planner-json-server-z3qo.onrender.com/goals",{
-      method: "POST",
-      headers: {"Content-Type": "application/json"
-      },
-      body: JSON.stringify(newGoal)
-    })
-    .then((res) => res.json())
-    .then((data) =>{
-      setGoals([...goals,data]);
-      setName("");
-      setTargetAmount("");
-      setSavedAmount("");
-      setCategory("");
-      setDeadline("");
-      setCreatedAt("");
+  function handleDelete(id) {
+    fetch(
+      `https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${id}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      const updateGoals = goals.filter((goal) => goal.id !== id);
+      setGoals(updateGoals);
     });
   }
-}
-
-  function handleDelete(id){
-    fetch(`https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${id}`,{
-      method: "DELETE"
-    })
-    .then((res) =>{
-      const updateGoals = goals.filter(goal =>goal.id !== id);
-      setGoals(updateGoals);
-  })
-}
-  function handleEdit(goal){
+  function handleEdit(goal) {
     setEditingGoal(goal);
     setName(goal.name);
     setTargetAmount(goal.targetAmount);
@@ -86,12 +111,52 @@ function App(){
     setCategory(goal.category);
     setDeadline(goal.deadline);
     setCreatedAt(goal.createdAt);
-    handleSubmit()
+    handleSubmit();
   }
-  
+
   return (
     <div>
       <h1>Smart Goal Planner</h1>
+      <form onSubmit={handleSubmit}>
+        <h2>Add a new Goal</h2>
+        <input
+          type="text"
+          placeholder="Goal name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Target amount"
+          value={targetAmount}
+          onChange={(e) => setTargetAmount(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Saved amount"
+          value={savedAmount}
+          onChange={(e) => setSavedAmount(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="Deadline"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="Created"
+          value={createdAt}
+          onChange={(e) => setCreatedAt(e.target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
 
       {goals.map((goal) => (
         <div key={goal.id}>
@@ -101,28 +166,23 @@ function App(){
           <div>Category: {goal.category}</div>
           {/* <div>Deadline: {goal.deadline}</div>
           <div>Created: {goal.createdAt}</div> */}
-          <div>Remaining days; {differenceInDays(new Date(goal.deadline),new Date(goal.createdAt))}</div>
-          <ProgressBar completed={goal.savedAmount/goal.targetAmount* 100}></ProgressBar>
+          <div>
+            Remaining days;{" "}
+            {differenceInDays(
+              new Date(goal.deadline),
+              new Date(goal.createdAt)
+            )}
+          </div>
+          <ProgressBar
+            completed={(goal.savedAmount / goal.targetAmount) * 100}
+          ></ProgressBar>
 
           <button onClick={() => handleEdit(goal)}>Edit</button>
           <button onClick={() => handleDelete(goal.id)}>Delete</button>
-          
         </div>
       ))}
-
-      <form onSubmit={handleSubmit}>
-        <h2>Add a new Goal</h2>
-        <input type="text"placeholder="Goal name"value={name}onChange={(e) => setName(e.target.value)}/>
-        <input type="number"placeholder="Target amount"value={targetAmount}onChange={(e) => setTargetAmount(e.target.value)}/>
-        <input type="number"placeholder="Saved amount"value={savedAmount}onChange={(e) => setSavedAmount(e.target.value)}/>
-        <input type="text"placeholder="Category"value={category}onChange={(e) => setCategory(e.target.value)}/>
-        <input type="date"placeholder="Deadline"value={deadline}onChange={(e) => setDeadline(e.target.value)}/>
-        <input type="date"placeholder="Created"value={createdAt}onChange={(e) => setCreatedAt(e.target.value)}/>
-        <button type="submit">Submit</button>
-      </form>
     </div>
-     );
-}   
-  
+  );
+}
 
 export default App;
