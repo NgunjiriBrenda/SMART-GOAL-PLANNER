@@ -1,108 +1,86 @@
-#Smart Goal Planner
-Smart Goal Planner is a web application designed to help users set, track, and achieve their goals efficiently. It allows users to create SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound), track progress with visual indicators, and stay motivated through an intuitive interface.
+#  Smart Goal Planner
 
-##Features
-Create & Manage Goals
-Add new goals with details like name, target amount, category, and deadline.
+A web app to help you create and track SMART goals—goals that are **S**pecific, **M**easurable, **A**chievable, **R**elevant, and **T**ime-bound.
 
-###Progress Tracking
-Visual progress bars show how close you are to achieving each goal.
+Demo: https://smart-goal-planner-flame.vercel.app/
 
+---
 
-####Edit & Delete Goals
-Update details or remove goals easily when they’re completed or no longer needed.
+##  Features
 
-#####Tech Stack
-Frontend: React (Hooks), Tailwind CSS / Custom CSS
+- **Create Goals** – Add new SMART goals using a monthly selector.
+- **Track Progress** – Monitor your goals with visual completion indicators.
+- **Simple Interface** – Clean and intuitive UI for easy goal management. :contentReference[oaicite:1]{index=1}
 
-Backend (Mock API): JSON Server
+---
 
-State Management: React useState & useEffect
+##  Demo
 
-HTTP Requests: Fetch API / Axios
+Visit the live demo to browse existing goals or add your own and track them by month.
 
-Installation & Setup
-1. Clone the Repository
-bash
-Copy
-Edit
-git clone https://github.com/your-username/smart-goal-planner.git
-cd smart-goal-planner
-2. Install Dependencies
-bash
-Copy
-Edit
+---
+
+## Installation (Local Development)
+
+Want to run it on your machine?
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/<your-username>/smart-goal-planner.git
+   cd smart-goal-planner
+
 npm install
-3. Start JSON Server
-Make sure your db.json (mock database) is in the project root.
+
+npm run dev
+
+### Usage Guide
+Add a Goal
+
+Click Add New Goal, select the target month, enter goal name and details.
+
+View Goals
+
+See goals listed by month with simple progress indicators (e.g. checkboxes or progress bars).
+
+Edit or Complete
+
+Click on a goal to update details or mark it complete.
+
+#### Tech Stack
+Framework: React or Next.js
+
+Styling: CSS Modules / Tailwind CSS
+
+Deployment: Hosted on Vercel
+
+##### Contributing
+Contributions, bug reports, and feature suggestions are welcome!
+
+Fork the repository
+
+Create a new branch:
 
 bash
 Copy
 Edit
-npx json-server --watch db.json --port 5000
-4. Start the React App
+git checkout -b feature/your-feature
+Commit your changes:
+
 bash
 Copy
 Edit
-npm start
+git commit -m "Add feature X"
+Push to your fork:
 
-
-Usage
-Add a Goal – Fill in goal details (name, target amount, category, etc.).
-
-Track Progress – Make deposits and monitor your progress via the progress bar.
-
-Manage Goals – Edit or delete goals as needed.
-
-
-Folder Structure
-java
+bash
 Copy
 Edit
-smart-goal-planner/
-│
-├── public/
-├── src/
-│   ├── components/
-│   │   ├── GoalList.jsx
-│   │   ├── GoalForm.jsx
-│   │   ├── ProgressBar.jsx
-│   │   
-│   ├── App.jsx
-│   ├── index.js
-│   └── styles/
-│       └── ...
-├── db.json
-├── package.json
-└── README.md
-API Endpoints (via JSON Server)
-Method	Endpoint	Description
-GET	/goals	Fetch all goals
-POST	/goals	Add a new goal
-PATCH	/goals/:id	Update a goal
-DELETE	/goals/:id	Delete a goal
+git push origin feature/your-feature
+Open a Pull Request for review 
 
-Future Improvements
-User authentication and personalized dashboards.
+###### MIT License
 
-Notifications or reminders for goal deadlines.
+Copyright (c) 2025 Your Name
 
-Graphical analytics (charts for tracking progress over time).
-
-Deploy to platforms like Vercel or Netlify with a hosted backend.
-
-Contributing
-Contributions are welcome!
-
-Fork the project.
-
-Create a new branch (git checkout -b feature-name).
-
-Commit changes (git commit -m 'Add feature').
-
-Push to the branch (git push origin feature-name).
-
-Open a Pull Request.
-
-License
-This project is licensed under the MIT License.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+...
