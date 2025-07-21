@@ -1,3 +1,4 @@
+import ProgressBar from '@ramonak/react-progress-bar'
 import React, {useState, useEffect} from 'react';
 
 function App(){
@@ -98,8 +99,10 @@ function App(){
           <div>Category: {goal.category}</div>
           <div>Deadline: {goal.deadline}</div>
           <div>Created: {goal.createdAt}</div>
+          <ProgressBar completed={goal.savedAmount/goal.targetAmount* 100}></ProgressBar>
           <button onClick={() => handleEdit(goal)}>Edit</button>
           <button onClick={() => handleDelete(goal.id)}>Delete</button>
+          
         </div>
       ))}
 
