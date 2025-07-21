@@ -13,7 +13,7 @@ function App(){
   const[editingGoal, setEditingGoal]= useState("")
 
   useEffect(() =>{
-    fetch("http://localhost:3001/goals")
+    fetch("https://smart-goal-planner-json-server-z3qo.onrender.com/goals")
     .then((res) => res.json())
     .then((data) =>setGoals(data))
   },[]);
@@ -33,7 +33,7 @@ function App(){
     if(editingGoal){
      const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt};
 
-    fetch(`http://localhost:3001/goals/${editingGoal.id}`,{
+    fetch(`https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${editingGoal.id}`,{
       method: "PATCH",
       headers: {"Content-Type": "application/json",
 
@@ -50,7 +50,7 @@ function App(){
   }else {;
      const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt};
 
-    fetch("http://localhost:3001/goals",{
+    fetch("https://smart-goal-planner-json-server-z3qo.onrender.com/goals",{
       method: "POST",
       headers: {"Content-Type": "application/json"
       },
@@ -70,7 +70,7 @@ function App(){
 }
 
   function handleDelete(id){
-    fetch(`http://localhost:3001/goals/${id}`,{
+    fetch(`https://smart-goal-planner-json-server-z3qo.onrender.com/goals/${id}`,{
       method: "DELETE"
     })
     .then((res) =>{
