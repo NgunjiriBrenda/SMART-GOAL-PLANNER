@@ -1,3 +1,4 @@
+import { differenceInDays } from 'date-fns';
 import ProgressBar from '@ramonak/react-progress-bar'
 import React, {useState, useEffect} from 'react';
 
@@ -30,10 +31,10 @@ function App(){
   function handleSubmit(e){
     e.preventDefault();
     if(editingGoal){
-     const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt,body};
+     const newGoal={name,targetAmount,savedAmount,category,deadline,createdAt};
 
     fetch(`http://localhost:3001/goals/${editingGoal.id}`,{
-      method: "PUT",
+      method: "PATCH",
       headers: {"Content-Type": "application/json",
 
       },
@@ -85,6 +86,7 @@ function App(){
     setCategory(goal.category);
     setDeadline(goal.deadline);
     setCreatedAt(goal.createdAt);
+    handleSubmit()
   }
   
   return (
@@ -97,9 +99,11 @@ function App(){
           <div>Target: {goal.targetAmount}</div>
           <div>Saved: {goal.savedAmount}</div>
           <div>Category: {goal.category}</div>
-          <div>Deadline: {goal.deadline}</div>
-          <div>Created: {goal.createdAt}</div>
+          {/* <div>Deadline: {goal.deadline}</div>
+          <div>Created: {goal.createdAt}</div> */}
+          <div>Remaining days; {differenceInDays(new Date(goal.deadline),new Date(goal.createdAt))}</div>
           <ProgressBar completed={goal.savedAmount/goal.targetAmount* 100}></ProgressBar>
+
           <button onClick={() => handleEdit(goal)}>Edit</button>
           <button onClick={() => handleDelete(goal.id)}>Delete</button>
           
